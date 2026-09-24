@@ -16,19 +16,21 @@
     <!-- ✅ THÊM MỚI: Cầu nối lưu trữ - trang này lưu hộ iframe vì storage ở đây bền vững hơn -->
     <script>
       window.addEventListener('message', function(e) {
-        if (!e.data || e.data.source !== 'loca-storage-bridge') return;
-        var iframeWin = document.getElementById('app-frame').contentWindow;
-
-        if (e.data.action === 'set') {
-          try { localStorage.setItem(e.data.key, e.data.value); } catch(err) {}
-        } else if (e.data.action === 'remove') {
-          try { localStorage.removeItem(e.data.key); } catch(err) {}
-        } else if (e.data.action === 'get') {
-          var val = null;
-          try { val = localStorage.getItem(e.data.key); } catch(err) {}
-          iframeWin.postMessage({ source: 'loca-storage-bridge', reqId: e.data.reqId, value: val }, '*');
-        }
-      });
+          alert("📩 Parent nhận được: " + JSON.stringify(e.data));   // ✅ THÊM TẠM DÒNG NÀY để test
+        
+          if (!e.data || e.data.source !== 'loca-storage-bridge') return;
+          var iframeWin = document.getElementById('app-frame').contentWindow;
+        
+          if (e.data.action === 'set') {
+            try { localStorage.setItem(e.data.key, e.data.value); } catch(err) {}
+          } else if (e.data.action === 'remove') {
+            try { localStorage.removeItem(e.data.key); } catch(err) {}
+          } else if (e.data.action === 'get') {
+            var val = null;
+            try { val = localStorage.getItem(e.data.key); } catch(err) {}
+            iframeWin.postMessage({ source: 'loca-storage-bridge', reqId: e.data.reqId, value: val }, '*');
+          }
+        });
     </script>
 </body>
 </html>
